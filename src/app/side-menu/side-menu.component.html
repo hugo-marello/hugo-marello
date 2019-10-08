@@ -1,0 +1,43 @@
+<mat-toolbar>
+    <i (click)="sidenav.toggle()" class="fas fa-stream menu-icon" *ngIf="opened"></i>
+    <i (click)="sidenav.toggle()" class="fas fa-bars menu-icon" *ngIf="!opened"></i>
+    <span style="flex-grow:1;">Hugo Marello - Portfolio</span>
+
+    <div *ngIf="!hideLinks">
+        <a target="_blank" href="https://github.com/hugo-marello/hugo-marello.github.io" class="links" title="Source code for this project">
+            <i class="fas fa-2x fa-code" ></i>
+        </a>
+        <a target="_blank" href="https://www.linkedin.com/in/hugomarello/" class="links" title="Linkedin Profile">
+            <i class="fab fa-2x fa-linkedin" ></i>
+        </a>
+        <a target="_blank" href="https://github.com/hugo-marello" class="links" title="Github profile">
+            <i class="fab fa-2x fa-github"></i>
+        </a>
+    </div>
+    <button *ngIf="hideLinks" mat-icon-button [matMenuTriggerFor]="menu">
+        <i class="fas fa-ellipsis-v fa-2x"></i>
+    </button>
+    <mat-menu #menu="matMenu">
+        <a mat-menu-item target="_blank" href="https://github.com/hugo-marello/hugo-marello.github.io" class="links" title="Source code for this project">
+            <i class="fas fa-2x fa-code" ></i>
+        </a>
+        <a mat-menu-item target="_blank" href="https://www.linkedin.com/in/hugomarello/" class="links" title="Linkedin Profile">
+            <i class="fab fa-2x fa-linkedin" ></i>
+        </a>
+        <a mat-menu-item target="_blank" href="https://github.com/hugo-marello" class="links" title="Github profile">
+            <i class="fab fa-2x fa-github"></i>
+        </a>
+    </mat-menu>
+</mat-toolbar>
+
+<mat-sidenav-container class="nav-container">
+    <mat-sidenav #sidenav mode="side" [(opened)]="opened">
+        Sidenav content
+    </mat-sidenav>
+    <mat-sidenav-content >
+        <router-outlet>
+                <img src="https://media.giphy.com/media/S5JSwmQYHOGMo/giphy.gif" style="display: block;margin-left: auto;margin-right: auto;width: 50%;"/>
+                <!-- <img src="http://placekitten.com/200/300" style="display: block;margin-left: auto;margin-right: auto;width: 50%;"/> -->
+        </router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>
