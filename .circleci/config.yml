@@ -22,4 +22,9 @@ jobs:
 
       - run: npm run test
       - run: npm run e2e
+      - run: npm run build-prod
+      - run: git add .
+      - run: git commit -m"[skip ci] New version published"
+      - run: git push
+
 
