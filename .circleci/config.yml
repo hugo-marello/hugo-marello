@@ -11,7 +11,7 @@ jobs:
       - run: cd source
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "package-lock.json" }}
+            - v1-dependencies-{{ checksum "source/package-lock.json" }}
             - v1-dependencies-
 
       - run: npm install
@@ -19,7 +19,7 @@ jobs:
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package-lock.json" }}
+          key: v1-dependencies-{{ checksum "source/package-lock.json" }}
 
       - run: npm run test
       - run: npm run e2e
