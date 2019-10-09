@@ -1,40 +1,45 @@
 version: 2
 jobs:
 
-  checkout-code:
+  install-dependencies:
     docker:
       - image: circleci/node:10.16.3-stretch-browsers
     working_directory: ~/repo
     steps:
       - checkout
-
-  install-dependencies:
-    docker:
-      - image: circleci/node:10.16.3-stretch-browsers
-    working_directory: ~/repo/source
-    steps:
+      - attach_workspace:
+        at: ~/repo
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "package-lock.json" }}
-            - v1-dependencies-
-      - run: npm install
+            - dependencies-{{ checksum "source/package-lock.json" }}
+      - run: cd source && npm install
       - save_cache:
           paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package-lock.json" }}
+            - source/node_modules
+          key: dependencies-{{ checksum "source/package-lock.json" }}
+      - persist_to_workspace:
+          root: .
+          paths: source
 
   build:
     docker:
       - image: circleci/node:10.16.3-stretch-browsers
-    working_directory: ~/repo/source
+    working_directory: ~/repo
     steps:
+      - attach_workspace:
+          at: ~/repo
       - run: npm run build-prod
+      - persist_to_workspace:
+          root: .
+          paths: source/dist
 
   unit-test:
     docker:
       - image: circleci/node:10.16.3-stretch-browsers
     working_directory: ~/repo/source
     steps:
+      - attach_workspace:
+          at: ~/repo
       - run: npm run test  
 
   e2e-test:
@@ -42,6 +47,8 @@ jobs:
       - image: circleci/node:10.16.3-stretch-browsers
     working_directory: ~/repo/source
     steps:
+      - attach_workspace:
+          at: ~/repo
       - run: npm run e2e  
 
   deploy:
@@ -49,6 +56,8 @@ jobs:
       - image: circleci/node:10.16.3-stretch-browsers
     working_directory: ~/repo
     steps:
+      - attach_workspace:
+          at: ~/repo
       - run: cp -r source/dist/portfolio/ .
       - run: git add .
       - run: git config user.email "hugo.marello@gmail.com"
@@ -56,4 +65,23 @@ jobs:
       - run: git commit -m"[skip ci] New version published"
       - run: git push
 
-
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - checkout-code
+      - install-dependencies:
+          requires:
+            - checkout-code
+      - build:
+          requires:
+            - install-dependencies
+      - unit-test:
+          requires:
+            - build
+      - e2e-test:
+          requires:
+            - unit-test
+      - deploy:
+          requires:
+            - e2e-test
