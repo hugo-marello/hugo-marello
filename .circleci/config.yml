@@ -61,8 +61,18 @@ workflows:
   build-and-deploy:
     jobs:
       - checkout-code
-      - install-dependencies
-      - build
-      - unit-test
-      - e2e-test
-      - deploy
+      - install-dependencies:
+          requires:
+            - checkout-code
+      - build:
+          requires:
+            - install-dependencies
+      - unit-test:
+          requires:
+            - build
+      - e2e-test:
+          requires:
+            - unit-test
+      - deploy:
+          requires:
+            - e2e-test
