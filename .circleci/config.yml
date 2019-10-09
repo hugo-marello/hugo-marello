@@ -23,7 +23,10 @@ jobs:
       - run: npm run test
       - run: npm run e2e
       - run: npm run build-prod
-      - run: git add .
+      - run: rm -r doc
+      - run: cp -r dist/portfolio/ doc
+      - run: rm -r dist/portfolio/
+      - run: git add doc
       - run: git config user.email "hugo.marello@gmail.com"
       - run: git config user.name "hugo-marello"
       - run: git commit -m"[skip ci] New version published"
