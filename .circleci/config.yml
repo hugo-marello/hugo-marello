@@ -8,6 +8,7 @@ jobs:
 
     steps:
       - checkout
+      - run: cd source
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package-lock.json" }}
@@ -23,13 +24,10 @@ jobs:
       - run: npm run test
       - run: npm run e2e
       - run: npm run build-prod
-      - run: rm -r doc
-      - run: cp -r dist/portfolio/ doc
-      - run: rm -r dist/portfolio/
-      - run: git add doc
+      - run: cd ..
+      - run: cp -r source/dist/portfolio/ .
+      - run: git add .
       - run: git config user.email "hugo.marello@gmail.com"
       - run: git config user.name "hugo-marello"
       - run: git commit -m"[skip ci] New version published"
       - run: git push
-
-
