@@ -35,7 +35,7 @@ jobs:
       - image: circleci/node:10.16.3-stretch-browsers
     working_directory: ~/repo/source
     steps:
-      - run: pwn
+      - run: pwd
       - run: ls -la
       - run: ls -la ..
       - run: npm run test  
