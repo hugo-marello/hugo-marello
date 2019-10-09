@@ -19,13 +19,14 @@ jobs:
           key: dependencies-{{ checksum "source/package-lock.json" }}
       - persist_to_workspace:
           root: .
-          paths: .
+          paths: source/node_modules
 
   build:
     docker:
       - image: circleci/node:10.16.3-stretch-browsers
     working_directory: ~/repo
     steps:
+      - checkout
       - attach_workspace:
           at: ~/repo
       - run: cd source && npm run build-prod
@@ -38,6 +39,7 @@ jobs:
       - image: circleci/node:10.16.3-stretch-browsers
     working_directory: ~/repo
     steps:
+      - checkout
       - attach_workspace:
           at: ~/repo
       - run: cd source && npm run test  
@@ -47,6 +49,7 @@ jobs:
       - image: circleci/node:10.16.3-stretch-browsers
     working_directory: ~/repo
     steps:
+      - checkout
       - attach_workspace:
           at: ~/repo
       - run: cd source && npm run e2e  
@@ -56,6 +59,7 @@ jobs:
       - image: circleci/node:10.16.3-stretch-browsers
     working_directory: ~/repo
     steps:
+      - checkout
       - attach_workspace:
           at: ~/repo
       - run: cp -r source/dist/portfolio/ .
