@@ -19,7 +19,7 @@ jobs:
           key: dependencies-{{ checksum "source/package-lock.json" }}
       - persist_to_workspace:
           root: .
-          paths: source
+          paths: .
 
   build:
     docker:
