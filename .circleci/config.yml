@@ -62,6 +62,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/repo
+      - run: rm *.js *.css *.html *.ico *.txt
       - run: cp -r source/dist/portfolio/* .
       - run: git add .
       - run: git config user.email "hugo.marello@gmail.com"
