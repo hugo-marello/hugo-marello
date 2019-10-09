@@ -8,7 +8,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-        at: ~/repo
+          at: ~/repo
       - restore_cache:
           keys:
             - dependencies-{{ checksum "source/package-lock.json" }}
